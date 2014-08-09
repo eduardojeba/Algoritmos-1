@@ -1,0 +1,19 @@
+
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+
+using namespace sdt;
+
+void main()
+{
+	int Suma, N, i;
+	Suma=0;
+	cout<<"ingrese N: ";
+	cin>>N;
+	for(i=0;i<N;i++)
+    Suma=Suma+(2*i+1);
+	cout<<"el resultado es: "<<Suma;
+	getch();
+}
+
