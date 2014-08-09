@@ -3,7 +3,7 @@
 #include <iostream>
 #include "conio.h"
 
-using namespace sdt;
+using namespace std;
 
 void main()
 {
@@ -12,7 +12,7 @@ void main()
 	cout<<"ingrese N: ";
 	cin>>N;
 	for(i=0;i<N;i++)
-    Suma=Suma+(2*i+1);
+           Suma=Suma+(2*i+1);
 	cout<<"el resultado es: "<<Suma;
 	getch();
 }
