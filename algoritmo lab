@@ -1,0 +1,125 @@
+// secuenciadetresentres.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+
+using namespace std;
+
+bool verifEsPrimo(int n)
+{
+	int i;
+	bool k=true;
+	for(i=2;i<=n;i++)
+	{
+		if(n%i==0){
+			k=false;
+		}
+	}
+	return(k);
+}
+void mostrarPrimerosPrimos(int n)
+{
+	int c=1,cp=0;
+	while(cp<n)
+	{
+		if(verifEsPrimo(c)==true)
+		{
+			cout<<c;
+			cp++;
+		}
+	}
+
+}
+void mostrarTresytres(int n)
+{
+	int i,cImp=1,cPar=2,c=1;
+	bool k = true;
+	for (i=0;i<n;i++)
+	{
+		if(k == true)
+		{
+          cout<<Cpar;
+		  cImp=cImp+2;
+		  c++;
+		  if(c==3)
+		  {
+			  k=false;
+		      c=0;
+		  }
+		}
+		else(k == false)
+		{
+			cout<<cPar;
+			cPar=cPar+2;
+			k=true;
+			c++
+			if(c==3)
+			{
+				k=true;
+				c=0;
+			}
+		}
+	}
+}
+void mostrarSecuencia(int n)
+{
+	int c=1,i;
+	for(i=0;i<n;i++)
+	{
+		cout<<c;
+		c=c+3;
+	}
+}
+void mostrarImpares(int n)
+{
+	int c=1,i;
+	for(i=0;i<n;i++)
+		cout<<c;
+	    c=c+2;
+}
+void mostrarImparesInv(int n)
+{
+	int i,p;
+	p=2*p-1;
+	for(i=0;i<n;i++)
+	{
+		cout<<p;
+		p=p-2;
+	}
+}
+void main()
+{
+	int elementos,op;
+	cout<<"ingrese la cantidad de numeros a mostrar: ";
+	cin>> elementos;
+	do{
+	   cout<<endl<<endl<<"***MENU***";
+	   cout<<endl<<"1.- Mostrar secuencia suma tres";
+	   cout<<endl<<"2.- Mostrar secuencia numeros impares";
+	   cout<<endl<<"3.- Mostrar secuancia numeros impares invertidos";
+	   cout<<endl<<"4.- Mostrar secuancia numeros pares e impares de a tres";
+	   cout<<endl<<"5.- primeros nros primos...";
+	   cout<<endl<<"0.- Salir";
+	   cout<<endl<<"Seleccionar opcion : ";
+	   cin>>op;
+	   switch(op)
+	   {
+	   case 1: mostrarSecuencia(elementos);
+	           break;
+	   case 2: mostrarImpares(elementos);
+	           break;
+	   case 3: mostrarImparesInv(elementos);
+		       break;
+	   case 4: mostrarTresytres(elementos);
+		       break;
+	   case 5: mostrarPrimerosPrimos(elementos);
+		       break;
+	   }
+
+	}while(op !=0);
+	
+	getch();
+}
+
