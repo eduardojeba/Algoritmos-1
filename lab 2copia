@@ -1,0 +1,106 @@
+#include <iostream>
+#include <conio.h>
+using namespace std;
+void cargar(int vec[], int n){
+	int i;
+	for(i=0;i<n;i++){
+		cout << "Introducir elemento ["<<i<<"] : ";
+		cin >> vec[i];
+	}
+}
+void mostrar(int vec[], int n){
+	int i;
+	cout << endl << "\nLos elementos del vector son : ";
+	for(i=0;i<n;i++){
+		cout << endl << "vec["<<i<<"]: " << vec[i];
+	}
+}
+int sumaElementos(int vec[], int n){
+	int i,s=0;
+	for(i=0;i<n;i++){
+		s = s + vec[i];
+	}
+	return(s);
+}
+bool verifEsPrimo(int n){
+	int i;
+	bool k=true;
+	for(i=2;i<=n-1;i++){
+		if(n%i == 0){
+			k = false;
+		}
+	}
+	return(k);
+}
+int sumaElementosPrimos(int vec[], int n){
+	int i,s=0;
+	for(i=0;i<n;i++){
+		if(verifEsPrimo(vec[i])){
+			s = s + vec[i];
+		}
+	}
+	return(s);
+}
+
+int obtNesimoPrimo(int n){
+	int cp=0,c=0;
+	while(cp<n){
+		c++;
+		if(verifEsPrimo(c) == true){
+			cp++;
+		}
+	}
+	return(c);
+}
+void cargarPrimos(int vec[], int n){
+	int i;
+	for(i=0;i<n;i++){	
+		vec[i] = obtNesimoPrimo(n-i);
+	}	
+}
+void eliminarPrimos(int vec[], int &n){
+	int i,k;
+	for(i=0;i<n;i++){	
+		if(verifEsPrimo(vec[i])){
+			for(k=i;k<n-1;k++){
+				vec[k] = vec[k+1];
+			}
+			n--;
+			i--;
+		}
+	}	
+}
+int main(){
+	int v[30],nroElem=0,opcion;
+	do{
+		cout << endl << endl<<"*****  M E N U ******";
+		cout << endl << "1.- Cargar vector";
+		cout << endl << "2.- Mostrar vector";
+		cout << endl << "3.- Suma elementos del vector";
+		cout << endl << "4.- Suma elementos PRIMOS del vector";
+		cout << endl << "5.- Cargar con primos Descendentemente";
+		cout << endl << "6.- Eliminar elementos primos";
+		cout << endl << "0.- Salir";
+		cout << endl << "Seleccione Opcion : ";
+		cin >> opcion;
+		switch(opcion){
+			case 1 : cout << "Introducir numero de elementos : ";
+					 cin >> nroElem;
+					 cargar(v,nroElem);
+					 break;
+			case 2 : mostrar(v,nroElem);
+					 break;
+			case 3 : cout << "\nLa suma de elementos es : "<<sumaElementos(v,nroElem);					
+					 break;
+			case 4 : cout << "\nLa suma de elementos PRIMOS es : "
+						  <<sumaElementosPrimos(v,nroElem);					
+			case 5 : cout << "Introducir numero de elementos : ";
+					 cin >> nroElem;
+					 cargarPrimos(v,nroElem);
+					 break;
+			case 6 : eliminarPrimos(v,nroElem);
+					 break;
+			}
+	}while(opcion != 0);
+	return(1);
+}
