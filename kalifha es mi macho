@@ -1,0 +1,38 @@
+#include <iostream>
+#include <conio.h>
+
+using namespace std;
+
+int mostrarSerieFibonacci(int n){
+
+	int a=0,b=1,fibo,cont=2;
+
+	if (n==1)
+		return 0;
+	if (n==2)
+		return 1;
+	while (cont<n){
+		fibo = a + b;
+		a = b;
+		b = fibo;
+		cont++;
+	}
+	return (fibo);
+}
+
+void cargarSerieFibonacci(int vec[],int n){
+	int i,vect[100];
+	for(i=0;i<n;i++){
+		vect[i] = mostrarSerieFibonacci(n);
+	}
+}
+
+void main(){
+	int n,vec[10000];
+	cout << "numero de elementos: ";
+	cin >> n;
+	mostrarSerieFibonacci(n);
+	cargarSerieFibonacci(vec,n);
+	
+	 getch();
+}
