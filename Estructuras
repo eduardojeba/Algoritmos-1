@@ -1,0 +1,100 @@
+// estructuras.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include "conio.h"
+#include <iostream>
+#include "string.h"
+
+using namespace std;
+
+struct regAmigo{
+
+	char nombre[100];
+	int edad;
+	char sexo;
+};
+
+void cargar(regAmigo V[], int n){
+
+	for(int i=0;i<n;i++){
+	
+		cout<<endl<<"Introduzca el nombre: ";
+		do{
+		 gets(V[i].nombre);
+		}while(strlen(V[i].nombre)==0);
+		cout<<endl<<"Edad: ";
+		cin>>V[i].edad;
+		cout<<endl<<"sexo<F/M>: ";
+		cin>>V[i].sexo;
+
+	}
+}
+void mostrar(regAmigo V[], int n){
+	cout<<endl<<"Los datos son: ";
+
+	for(int i=0;i<n;i++){
+	
+		cout << endl << V[i].nombre << " "
+		             << V[i].edad<< " "
+ 		             << V[i].sexo;
+	}
+}
+
+int obtenerEdadMayor(regAmigo V[], int n){
+
+	int i, edadMay=0;
+	for(i=0;i<n;i++){
+	
+		if(V[i].edad>edadMay){
+			edadMay=V[i].edad;
+		}
+	}
+	return(edadMay);
+}
+//regAmigo obtAmigoConEdadMayor(regAmigo V[], int n){
+
+//	int i,edadMay=0;
+//	regAmigo amigoMay;
+//	for(i=0;i<n;i++){
+	
+//		if(V[i].edad>edadMay){
+		
+//			edadMay = V[i].edad;
+//			amigoMay = V[i];
+//		}
+//	}
+//	return(amigoMay);
+//}
+void ordenar(regAmigo V[], int n){
+
+	int i,j;
+	regAmigo aux;
+	for(i=0;i<n;i++){
+		for(j=i+1;j<n;j++){
+		
+			if( V[i].edad > V[j].edad){
+			
+				aux=V[i];
+				V[i]=V[j];
+				V[j]=aux;
+			}
+		}
+	}
+}
+void main(){
+
+	int nroAmigo;
+	regAmigo vecAmigo[100],aux;
+	cout<<endl<<"Introduzca cuantos Amigos: ";
+	cin>>nroAmigo;
+	cargar(vecAmigo,nroAmigo);
+	mostrar(vecAmigo,nroAmigo);
+	ordenar(vecAmigo,nroAmigo);
+	mostrar(vecAmigo,nroAmigo);
+	//cout<<endl<<" La edad mayor es: "<<obtenerEdadMayor(vecAmigo,nroAmigo);
+	//aux=obtAmigoConEdadMayor(vecAmigo,nroAmigo);
+	//cout<<endl<<aux.nombre<<" "<<aux.edad<<" "<<aux.sexo;
+	getch();
+}
+
