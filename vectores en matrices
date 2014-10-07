@@ -1,0 +1,173 @@
+#include <iomanip>
+#include <iostream>
+#include <conio.h>
+using namespace std;
+#define fil 20
+#define col 20
+struct tVector{
+
+	int vec[20];
+};
+void cargarAleatorio(tVector mat[fil][col], int n){
+ int i,j,k;
+   for(i=0;i<n;i++){
+     for(j=0;j<n;j++){
+		 for(k=0;k<n;k++){
+            
+			mat[i][j].vec[k]=rand()%100;
+		 }
+     }
+   }
+}
+
+void mostrar(tVector mat[fil][col], int n){
+  int i,j,k;
+    for(i=0;i<n;i++){
+       for(j=0;j<n;j++){
+		   for(k=0;k<n;k++){
+              cout<<setw(4)<<mat[i][j].vec[k]<<" ";
+		   }
+		   cout<<"       ";
+       }
+       cout<<endl;
+    }
+}
+void cargarMatrizNoCuadrada(tVector mat[fil][col], int n, int m, int f){
+
+	int i,j,k;
+	for(i=0;i<n;i++){
+	
+		for(j=0;j<m;j++){
+		
+			for(k=0;k<f;k++){
+			mat[i][j].vec[k]=rand()%100;
+
+			}
+		}
+	}
+}
+void mostrarMatrizNoCuadrada(tVector mat[fil][col], int n, int m, int f){
+
+	int i,j,k;
+	for(i=0;i<n;i++){
+	
+		for(j=0;j<m;j++){
+		
+			for(k=0;k<f;k++){
+			cout<<setw(4)<<mat[i][j].vec[k]<<" ";
+
+			}
+			cout<<"       ";
+		}
+		cout<<endl;
+	}
+}
+
+void intercambiarTrian(tVector mat[fil][col], int n){
+
+	int i,j;
+	tVector aux;
+	for(i=0;i<n;i++){
+	
+		for(j=0;j<n;j++){
+		
+			if(i<j){
+			
+				aux=mat[i][j];
+				mat[i][j]=mat[j][i];
+				mat[j][i]=aux;
+			}
+		}
+	}
+}
+bool verifEsPrimo(int n){
+  int i;
+  bool k=true;
+      for(i=2;i<n-1;i++){
+          if(n%i==0){
+             k=false;
+          }
+      }
+  return(k);
+}
+void ordenarVector(int vec[],int n){
+   int i,j,aux;
+      for(i=0;i<n;i++){
+          for(j=i+1;j<n;j++){
+              if(vec[i]>vec[j]){
+                  aux=vec[i];
+                  vec[i]=vec[j];
+                  vec[j]=aux;
+               }
+          }
+       }
+}
+bool verSiHayPrimoEnVector(int vec[], int n){
+
+  int i;
+  bool k=false;
+	for(i=0;i<n;i++){
+		if(verifEsPrimo(vec[i])){
+	
+		k=true;
+	    }
+	}
+	return(k);
+}
+void ordenarVectorEnMatriz(tVector mat[fil][col],int n){
+
+	int i,j,k;
+	for(i=0;i<n;i++){
+	
+		for(j=0;j<n;j++){
+		
+			for(k=0;k<n;k++){
+			
+				if(verifEsPrimo(mat[i][j].vec[k])==true){
+					ordenarVector(mat[i][j].vec,n);
+				   
+				}
+			}
+		}
+	}
+}
+
+int main(){
+
+	int nroFil,opcion,nroCol,r;
+	tVector mat[fil][col];
+	cout<<"Introduzca el valor de Filas: ";
+	cin>>nroFil;
+	cout<<endl<<"Introduzca las columnas: ";
+	cin>>nroCol;
+	cout<<"Numero de elementos en vector: ";
+	cin>>r;
+	do{
+      cout << endl << endl<<"***** M E N U ******";
+      cout << endl << "1.- Cargar Matriz.";
+      cout << endl << "2.- Mostrar Matriz.";
+      cout << endl << "3.- Intercambiar triangulares.";
+      cout << endl << "4.- Ordenar vectores si existe Primo.";
+      cout << endl << "5.- Cargar Matriz no cuadrada";
+      cout << endl << "6.- Mostrar matriz no cuadrada";
+      cout << endl << "0.- Salir";
+      cout << endl << "Seleccione Opcion : ";
+      cin >> opcion;
+      switch(opcion){
+             case 1: cargarAleatorio(mat,nroFil);
+                     break;
+             case 2: mostrar(mat,nroFil);
+                     break;
+             case 3: intercambiarTrian(mat,nroFil);
+                     break;
+             case 4: ordenarVectorEnMatriz(mat,nroFil);
+                     break;
+             case 5: cargarMatrizNoCuadrada(mat,nroFil,nroCol,r);
+                     break;
+             case 6: mostrarMatrizNoCuadrada(mat,nroFil,nroCol,r);
+                     break;
+       }
+    }while(opcion != 0);
+	getch();
+	return(1);
+}
