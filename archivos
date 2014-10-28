@@ -1,0 +1,143 @@
+#include "conio.h"
+#include <iostream>
+#include <iomanip>
+#include <stdio.h>
+#include <string.h>
+
+using namespace std;
+
+struct regAmigo{
+
+	char nombre[30];
+	int edad;
+	char email[30];
+	char estado;
+};
+
+void cargarArchivo(){
+    FILE*ptr;
+	regAmigo reg;
+	cout<<endl<<"ingrese el nombre: ";
+	do{
+	   gets(reg.nombre);
+	}while(strlen(reg.nombre)==0);
+	cout<<endl<<"ingrese la edad: ";
+	cin>>reg.edad;
+	cout<<endl<<"ingrese el email: ";
+	do{
+	   gets(reg.email);
+	}while(strlen(reg.email)==0);
+	reg.estado=='N';
+	ptr=fopen("agenda.dat","ab");
+	fwrite(&reg,sizeof(reg),1,ptr);
+	fclose(ptr);
+}
+void mostrarArchivo(){
+
+	FILE*ptr;
+	regAmigo reg;
+	ptr=fopen("agenda.dat","rb");
+	if(ptr!=NULL){
+
+		cout<<endl<<setw(70)<<"----------------------------------------------------------";
+		cout<<endl<<setw(50)<<"  Nombre         Edad           Email";
+		cout<<endl<<setw(70)<<"----------------------------------------------------------";
+		fread(&reg,sizeof(reg),1,ptr);
+		while(feof(ptr)==false){
+		
+			cout<<endl<<setw(30)<<reg.nombre<<setw(3)<<reg.edad<<setw(30)<<reg.email;
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+	    fclose(ptr);
+	}else{
+	
+		cout<<"archivo vacio";
+	}
+}
+void promedioEdad(){
+    int s=0,c=0;
+	FILE*ptr;
+	regAmigo reg;
+	ptr=fopen("agenda.dat","rb");
+	if(ptr!=NULL){
+
+		fread(&reg,sizeof(reg),1,ptr);
+		while(feof(ptr)==false){
+		
+			s=s+reg.edad;
+			c++;
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+	    fclose(ptr);
+		if(c!=0){
+			cout<<endl<<"el promedio es: "<<s/c;
+		}
+	}else{
+	
+		cout<<"archivo vacio";
+	}
+}
+
+void edadMayorMenor(){
+
+    int mayor=0,menor=500;
+	char nomMayor[30],nomMenor[30];
+	FILE*ptr;
+	regAmigo reg;
+	ptr=fopen("agenda.dat","rb");
+	if(ptr!=NULL){
+
+		fread(&reg,sizeof(reg),1,ptr);
+		while(feof(ptr)==false){
+		
+			if(reg.edad>mayor){
+			
+				mayor=reg.edad;
+				strcpy(nomMayor,reg.nombre);
+			}
+			if(reg.edad<menor){
+			
+				menor=reg.edad;
+				strcpy(nomMenor,reg.nombre);
+			}
+            
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+	    fclose(ptr);
+		cout<<endl<<"la edad mayor es: "<<mayor<<" y es de: "<<nomMayor;
+		cout<<endl<<"la edad menor es: "<<menor<<" y es de: "<<nomMenor;
+	}else{
+	
+		cout<<"archivo vacio";
+	}
+}
+
+void main(){
+	int opcion;
+	do{
+	
+		cout<<endl<<endl<<"*MENU ARCHIVO*";
+		cout<<endl<<"1.- Adicionar.";
+		cout<<endl<<"2.- Mostrar todo el archivo.";
+		cout<<endl<<"3.- Calcular el promedio de edad.";
+		cout<<endl<<"4.- Mostrar la edad mayor y menor.";
+		cout<<endl<<"0.- Salir.";
+		cout<<endl<<"Seleccione una opcion: ";
+		cin>>opcion;
+		switch(opcion){
+		
+			case 1: cargarArchivo();
+			        break;
+			case 2: mostrarArchivo();
+			        break;
+			case 3: promedioEdad();
+				    break;
+			case 4: edadMayorMenor();
+				    break;
+				    
+		}
+
+	}while(opcion!=0);
+
+	getch();
+}
