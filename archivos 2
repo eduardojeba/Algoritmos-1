@@ -1,0 +1,259 @@
+#include "conio.h"
+#include <iostream>
+#include <iomanip>
+#include <stdio.h>
+#include <string.h>
+
+using namespace std;
+
+
+struct regVentas{
+   int idventas;
+   char fecha[30];
+   int idprod;
+   int cant;
+   int idcliente;
+};
+struct regProducto{
+   int idprod;
+   char nombre[30];
+   int stock;
+   int precio;
+};
+struct regCliente{
+   int idcliente;
+   char nombre[30];
+   int NIT;
+};
+
+
+void cargarArchivoVentas(){
+  FILE*ptr;
+  regVentas reg;
+  cout<<endl<<"ingrese el idventas: ";
+  cin>>reg.idventas;
+  cout<<endl<<"ingrese la fecha: ";
+  do{
+  
+	  gets(reg.fecha);
+  }while(strlen(reg.fecha)==0);
+  cout<<endl<<"ingrese el idproducto: ";
+  cin>>reg.idprod;
+  cout<<endl<<"ingrese la cantidad: ";
+  cin>>reg.cant;
+  cout<<endl<<"ingrese el idcliente: ";
+  cin>>reg.idcliente;
+  ptr=fopen("ventas.dat","ab");
+  fwrite(&reg,sizeof(reg),1,ptr);
+  fclose(ptr);
+}
+
+void mostrarArchivoVentas(){
+
+	FILE*ptr;
+	regVentas reg;
+	ptr=fopen("ventas.dat","rb");
+	if(ptr==NULL){
+	
+		cout<<"el archivo no existe";
+	}else{
+	
+		cout<<endl<<"**Ventas**";
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+		
+			cout<<endl<<reg.idventas<<" "<<reg.fecha<<" "<<reg.idprod<<" "<<reg.cant<<" "<<reg.idcliente;
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+	}
+
+}
+
+void cargarArchivoProducto(){
+
+  FILE*ptr;
+  regProducto reg;
+  cout<<endl<<"ingrese el idproducto: ";
+  cin>>reg.idprod;
+  cout<<endl<<"ingrese el nombre del producto: ";
+  do{
+	  gets(reg.nombre);
+  }while(strlen(reg.nombre)==0);
+  cout<<endl<<"ingrese el stock: ";
+  cin>>reg.stock;
+  cout<<"ingrese el precio: ";
+  cin>>reg.precio;
+  ptr=fopen("producto.dat","ab");
+  fwrite(&reg,sizeof(reg),1,ptr);
+  fclose(ptr);
+}
+
+void mostrarArchivoProducto(){
+
+	FILE*ptr;
+	regProducto reg;
+	ptr=fopen("producto.dat","rb");
+	if(ptr==NULL){
+	
+		cout<<"el archivo no existe";
+	}else{
+	
+		cout<<endl<<"**Productos**";
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+		
+			cout<<endl<<reg.idprod<<" "<<reg.nombre<<" "<<reg.stock<<" "<<reg.precio;
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+	}
+
+}
+
+void cargarArchivoCliente(){
+  FILE*ptr;
+  regCliente reg;
+  cout<<endl<<"ingrese el idcliente: ";
+  cin>>reg.idcliente;
+  cout<<endl<<"ingrese el nombre del cliente: ";
+  do{
+	  gets(reg.nombre);
+  }while(strlen(reg.nombre)==0);
+  cout<<endl<<"ingrese el NIT: ";
+  cin>>reg.NIT;
+  ptr=fopen("cliente.dat","ab");
+  fwrite(&reg,sizeof(reg),1,ptr);
+  fclose(ptr);
+
+}
+void mostrarArchivoCliente(){
+
+	FILE*ptr;
+	regCliente reg;
+	ptr=fopen("cliente.dat","rb");
+	if(ptr==NULL){
+	
+		cout<<"el archivo no existe";
+	}else{
+	
+		cout<<endl<<"**Clientes**";
+		fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+		
+			cout<<endl<<reg.idcliente<<" "<<reg.nombre<<" "<<reg.NIT;
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+	}
+}
+regProducto obtProducto(int x){
+
+	FILE*ptr;
+	regProducto reg;
+	ptr=fopen("producto.dat","rb");
+	if(ptr!=NULL){
+	
+		fread(&reg,sizeof(reg),1,ptr);
+		while((!feof(ptr))&&(reg.idprod!=x)){
+		
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+	}
+	return(reg);
+}
+
+void reporteVentas(){
+
+	FILE*ptr;
+	regVentas reg;
+	regProducto regP;
+	int s=0;
+	ptr=fopen("ventas.dat","rb");
+	if(ptr==NULL){
+		cout<<"el archivo no existe..";
+	}else{
+		cout<<endl<<endl<<"--------------------------------------------------------";
+		cout<<endl<<"                  **REPORTE DE VENTAS**";
+		cout<<endl<<"--------------------------------------------------------------";
+		cout<<endl<<"  IdVenta   Producto  Cantidad   PreUnit   PReTotal";
+		cout<<endl<<"--------------------------------------------------------------";
+	    fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+		
+			regP=obtProducto(reg.idprod);
+			cout<<endl<<setw(5)<<reg.idventas<<setw(15)<<regP.nombre<<setw(10)
+				<<reg.cant<<setw(10)<<regP.precio<<setw(10)<<reg.cant*regP.precio;
+			s=s+(reg.cant*regP.precio);
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+		cout<<endl<<"-------------------------------------------------------------";
+		cout<<endl<<"                             Total es ------> : "<<s;
+		cout<<endl<<"-------------------------------------------------------------";
+	}
+}
+regCliente obtCliente(int n){
+
+	FILE*ptr;
+	regCliente reg;
+	ptr=fopen("clientes.dat","rb");
+	if(ptr!=NULL){
+	
+		fread(&reg,sizeof(reg),1,ptr);
+		while((feof(ptr)==false)&&(reg.idcliente!=n)){
+		
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+	}
+	return(reg);
+}
+
+void reporteVentas2(){
+
+	FILE*ptr;
+	regVentas reg;
+	regProducto regP;
+	regCliente regC;
+	int s=0;
+	ptr=fopen("ventas.dat","rb");
+	if(ptr==NULL){
+		cout<<"el archivo no existe..";
+	}else{
+		cout<<endl<<endl<<"--------------------------------------------------------";
+		cout<<endl<<"                  **REPORTE DE VENTAS**";
+		cout<<endl<<"--------------------------------------------------------------";
+		cout<<endl<<"  IdVenta   Producto  Cantidad   PreUnit   PReTotal  Nombre";
+		cout<<endl<<"--------------------------------------------------------------";
+	    fread(&reg,sizeof(reg),1,ptr);
+		while(!feof(ptr)){
+		
+			regP=obtProducto(reg.idprod);
+			regC=obtCliente(reg.idcliente);
+			cout<<endl<<setw(5)<<reg.idventas<<setw(15)<<regP.nombre<<setw(10)
+				<<reg.cant<<setw(10)<<regP.precio<<setw(10)<<reg.cant*regP.precio<<setw(10)<<regC.nombre;
+			s=s+(reg.cant*regP.precio);
+			fread(&reg,sizeof(reg),1,ptr);
+		}
+		fclose(ptr);
+		cout<<endl<<"-------------------------------------------------------------";
+		cout<<endl<<"                             Total es ------> : "<<s;
+		cout<<endl<<"-------------------------------------------------------------";
+	}
+}
+void main(){
+
+	//cargarArchivoVentas();
+	mostrarArchivoVentas();
+	//cargarArchivoProducto();
+	mostrarArchivoProducto();
+	//cargarArchivoCliente();
+	mostrarArchivoCliente();
+	//reporteVentas();
+	reporteVentas2();
+    getch();
+
+
+}
